@@ -37,65 +37,42 @@ public class TicTacToe {
         }
     }
 
-    private boolean askToPlayAgain() {
-        System.out.print("Do you want to play again? (y/n): ");
-        while (true) {
-            String input = scanner.next().trim().toLowerCase();
-            if (input.equals("y")) {
-                return true;
-            } else if (input.equals("n")) {
-                return false;
-            } else {
-                System.out.print("Invalid input. Please enter 'y' or 'n': ");
-            }
-        }
-    }
-
-
 
     public void start() {
         System.out.println("TicTacToe game started!");
 
-        boolean playAgain = true;
+        while (true) {
+            System.out.println("\nCurrent board state: ");
+            board.print();
+            System.out.println("\nPlayer " + currentPlayer.getMarker() + ", enter your move:");
 
-        while (playAgain) {
-            board.clear(); // reset board for new game
-            currentPlayer = player1; // or randomize if you prefer
+            int row = getValidInput("Enter row (0-2): ");
+            int col = getValidInput("Enter column (0-2): ");
 
-            while (true) {
-                System.out.println("\nCurrent board state: ");
-                board.print();
-                System.out.println("\nPlayer " + currentPlayer.getMarker() + ", enter your move:");
+            boolean moveMade = makeMove(row, col);
 
-                int row = getValidInput("Enter row (0-2): ");
-                int col = getValidInput("Enter column (0-2): ");
-
-                boolean moveMade = makeMove(row, col);
-
-                if (moveMade) {
-                    if (hasWinner()) {
-                        System.out.println("Player " + currentPlayer.getMarker() + " wins!");
-                        board.print();
-                        break;
-                    }
-
-                    if (board.isFull()) {
-                        System.out.println("It's a draw!");
-                        board.print();
-                        break;
-                    }
-
-                    switchCurrentPlayer();
+            if (moveMade) {
+                // ✅ Step 1: Check for win
+                if (hasWinner()) {
+                    System.out.println("Player " + currentPlayer.getMarker() + " wins!");
+                    board.print();
+                    break;  // End the game
                 }
-            }
 
-            playAgain = askToPlayAgain();
+                // ✅ Step 2: Check for draw
+                if (board.isFull()) {
+                    System.out.println("It's a draw!");
+                    board.print();
+                    break;  // End the game
+                }
+
+                // Switch player only if game hasn't ended
+                switchCurrentPlayer();
+            }
         }
 
-        closeScanner();
-        System.out.println("Thanks for playing!");
+        closeScanner();  // Always close scanner at end
     }
-
 
 
     public boolean makeMove(int x, int y) {
