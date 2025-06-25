@@ -19,52 +19,61 @@ public class TicTacToe {
         scanner = new Scanner(System.in);
     }
 
+    private int getValidInput(String prompt) {
+        int value;
+        while (true) {
+            System.out.print(prompt);
+            if (scanner.hasNextInt()) {
+                value = scanner.nextInt();
+                if (value >= 0 && value <= 2) {
+                    return value;
+                } else {
+                    System.out.println("Please enter a number between 0 and 2.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next(); // Clear the invalid input
+            }
+        }
+    }
+
+
     public void start() {
         System.out.println("TicTacToe game started!");
 
         while (true) {
             System.out.println("\nCurrent board state: ");
             board.print();
-            System.out.println("\nPlayer " + currentPlayer.getMarker() + ", enter your move (row column): ");
-            int row = -1;
-            int col = -1;
+            System.out.println("\nPlayer " + currentPlayer.getMarker() + ", enter your move:");
 
-            while (true) {
-                System.out.print("Enter row (0-2): ");
-                if (scanner.hasNextInt()) {
-                    row = scanner.nextInt();
-                    if (row >= 0 && row <= 2) {
-                        break;
-                    } else {
-                        System.out.println("Invalid row. Please enter a number between 0 and 2.");
-                    }
-                } else {
-                    System.out.println("Invalid input. Please enter a number.");
-                    scanner.next();
-                }
-            }
+            int row = getValidInput("Enter row (0-2): ");
+            int col = getValidInput("Enter column (0-2): ");
 
-            while (true) {
-                System.out.print("Enter column (0-2): ");
-                if (scanner.hasNextInt()) {
-                    col = scanner.nextInt();
-                    if (col >= 0 && col <= 2) {
-                        break;
-                    } else {
-                        System.out.println("Invalid column. Please enter a number between 0 and 2.");
-                    }
-                } else {
-                    System.out.println("Invalid input. Please enter a number.");
-                    scanner.next();
-                }
-            }
             boolean moveMade = makeMove(row, col);
 
             if (moveMade) {
+                // ✅ Step 1: Check for win
+                if (hasWinner()) {
+                    System.out.println("Player " + currentPlayer.getMarker() + " wins!");
+                    board.print();
+                    break;  // End the game
+                }
+
+                // ✅ Step 2: Check for draw
+                if (board.isFull()) {
+                    System.out.println("It's a draw!");
+                    board.print();
+                    break;  // End the game
+                }
+
+                // Switch player only if game hasn't ended
                 switchCurrentPlayer();
             }
         }
+
+        closeScanner();  // Always close scanner at end
     }
+
 
     public boolean makeMove(int x, int y) {
         if (x < 0 || x > 2 || y < 0 || y > 2) {
@@ -96,7 +105,11 @@ public class TicTacToe {
         System.out.println("It's now Player " + currentPlayer.getMarker() + "'s turn.");
     }
 
-    public void hasWinner() {}
+    public boolean hasWinner() {
+        char marker = currentPlayer.getMarker();
+        return board.hasThreeInRow(marker);
+    }
+
 
     public void closeScanner() {
         if (scanner != null) {
@@ -104,4 +117,6 @@ public class TicTacToe {
             System.out.println("Scanner closed.");
         }
     }
+
+
 }
