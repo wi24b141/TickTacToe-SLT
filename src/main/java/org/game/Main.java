@@ -6,18 +6,6 @@ public class Main {
         System.out.println("Hello world!");
 
         TicTacToe game = new TicTacToe();
-//        game.start();
-//
-//        game.makeMove(0, 0);
-//
-//        game.switchCurrentPlayer();
-//        game.makeMove(0, 1);
-//
-//        game.switchCurrentPlayer();
-//        game.makeMove(0, 2);
-//
-//        game.switchCurrentPlayer();
-//        game.makeMove(0, 3);
 
         try {
             game.start();
