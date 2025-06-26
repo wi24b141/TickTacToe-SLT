@@ -32,7 +32,7 @@ public class TicTacToe {
                 }
             } else {
                 System.out.println("Invalid input. Please enter a number.");
-                scanner.next(); // Clear the invalid input
+                scanner.next();
             }
         }
     }
@@ -59,8 +59,8 @@ public class TicTacToe {
         boolean playAgain = true;
 
         while (playAgain) {
-            board.clear(); // reset board for new game
-            currentPlayer = player1; // or randomize if you prefer
+            board.clear();
+            currentPlayer = player1;
 
             while (true) {
                 System.out.println("\nCurrent board state: ");
@@ -137,7 +137,6 @@ public class TicTacToe {
     public void closeScanner() {
         if (scanner != null) {
             scanner.close();
-            System.out.println("Scanner closed.");
         }
     }
 
